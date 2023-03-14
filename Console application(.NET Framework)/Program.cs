@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace Console_application_.NET_Framework_
 {
     internal class Program
     {
+        
+        
         static void Main(string[] args)
         {
             Dictionary<int, int[]> floors = new Dictionary<int, int[]>();
@@ -23,14 +26,15 @@ namespace Console_application_.NET_Framework_
             Console.WriteLine($"Ты зашел в пятиэтажное здание");
             Do(floor, floors);
             string move;
-
-            int money = 500;
+            
+            
 
 
 
             for (int i = 0; i < 100; i++)
             {
                 move = Console.ReadLine();
+                
                 if (move == "Вверх" || move == "вверх")
                 {
                     if (floor != 5)
@@ -73,16 +77,16 @@ namespace Console_application_.NET_Framework_
 
                 else if (move == "казино")
                 {
+                    Console.WriteLine("#######################################");
                     Console.WriteLine("Добро пожаловать в казино LO$E MONEY");
                     for (; ; )
                     {
-                        Casino(money);
+                        Casino();
                         Console.Write("Пойти на выход?(Да/Нет): ");
                         string choiceYesOrNot = Console.ReadLine();
                         if (choiceYesOrNot == "да")
                         {
                             break;
-                            
                         }
 
                         
@@ -134,156 +138,150 @@ namespace Console_application_.NET_Framework_
             }
 
             Console.Write("Что делать будешь: ");
-
+            
         }
 
-        static int Casino(int money)
+        static int Casino()
         {
-
+            int money = 500;
             
             Console.WriteLine($"Баланс: {money}$");
-            Console.Write("(Выйти/Ставка): ");
-            string choice = Console.ReadLine();
-            if (choice == "Ставка" || choice == "ставка")
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(0 + " ");
+            for (int i = 1; i < 37; i++)
             {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(0 + " ");
-                for (int i = 1; i < 37; i++)
+                if (i % 2 == 0)
                 {
-                    if (i % 2 == 0)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.Write(i + " ");
-                    }
-
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write(i + " ");
-                    }
-
-                }
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.Write("Введи размер ставки($): ");
-                int bet = Convert.ToInt32(Console.ReadLine());
-                if (bet <= money)
-                {
-                    money = money - bet;
-                    Console.Write("(Красное/Чёрное/Чётное/Нечётное/Диапазон(1-18;19-36)/Число): ");
-                    string play = Console.ReadLine();
-
-                    Random random = new Random();
-                    int number = random.Next(0, 36);
-
-                    if (play == "красное" || play == "нечетное")
-                    {
-                        if (number % 2 != 0)
-                        {
-                            money += (bet * 2) + bet;
-                        }
-
-                        else
-                        {
-                            bet = 0;
-                        }
-                    }
-                    else if (play == "черное" || play == "четное")
-                    {
-                        if (number % 2 == 0)
-                        {
-                            money += (bet * 2) + bet;
-                        }
-
-                        else
-                        {
-                            bet = 0;
-                        }
-                    }
-                    else if (play == "диапазон")
-                    {
-                        Console.Write("(первый/второй): ");
-                        string choiceDiapason = Console.ReadLine();
-                        if (choiceDiapason == "первый")
-                        {
-                            if (number <= 18)
-                            {
-                                money += (bet * 2) + bet;
-                            }
-                            else
-                            {
-                                bet = 0;
-                            }
-
-                        }
-
-                        else if (choiceDiapason == "второй")
-                        {
-                            if (number > 18)
-                            {
-                                money += (bet * 2) + bet;
-                            }
-                            else
-                            {
-                                bet = 0;
-                            }
-                        }
-
-                        else
-                        {
-                            Console.WriteLine("Нет такого диапазона");
-                        }
-                    }
-                    else if (play == "число")
-                    {
-                        Console.Write("Введи число: ");
-                        int choiceNumber = Convert.ToInt32(Console.ReadLine());
-                        if (choiceNumber == number)
-                        {
-                            money += (bet * 36) + bet;
-                        }
-                    }
-
-                    if (number == 0)
-                    {
-                        Console.Write("Выпавшее число: ");
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(number);
-                    }
-                    else if (number % 2 == 0)
-                    {
-                        Console.Write("Выпавшее число: ");
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.WriteLine(number);
-                    }
-                    else if (number % 2 != 0)
-                    {
-                        Console.Write("Выпавшее число: ");
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine(number);
-                    }
-                    Console.ForegroundColor = ConsoleColor.Black;
-
-                    Console.WriteLine($"Баланс: {money}$");
-
-                    
-                    
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write(i + " ");
                 }
 
                 else
                 {
-                    Console.WriteLine("У тебя нет таких денег :(");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(i + " ");
                 }
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.Write("Введи размер ставки($): ");
+            int bet = Convert.ToInt32(Console.ReadLine());
+            if (bet <= money)
+            {
+                money = money - bet;
+                Console.Write("(Красное/Чёрное/Чётное/Нечётное/Диапазон(1-18;19-36)/Число): ");
+                string play = Console.ReadLine();
+
+                Random random = new Random();
+                int number = random.Next(0, 36);
+
+                if (play == "красное" || play == "нечетное")
+                {
+                    if (number % 2 != 0)
+                    {
+                        money += (bet * 2) + bet;
+                    }
+
+                    else
+                    {
+                        bet = 0;
+                    }
+                }
+                else if (play == "черное" || play == "четное")
+                {
+                    if (number % 2 == 0)
+                    {
+                        money += (bet * 2) + bet;
+                    }
+
+                    else
+                    {
+                        bet = 0;
+                    }
+                }
+                else if (play == "диапазон")
+                {
+                    Console.Write("(первый/второй): ");
+                    string choiceDiapason = Console.ReadLine();
+                    if (choiceDiapason == "первый")
+                    {
+                        if (number <= 18)
+                        {
+                            money += (bet * 2) + bet;
+                        }
+                        else
+                        {
+                            bet = 0;
+                        }
+
+                    }
+
+                    else if (choiceDiapason == "второй")
+                    {
+                        if (number > 18)
+                        {
+                            money += (bet * 2) + bet;
+                        }
+                        else
+                        {
+                            bet = 0;
+                        }
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Нет такого диапазона");
+                    }
+                }
+                else if (play == "число")
+                {
+                    Console.Write("Введи число: ");
+                    int choiceNumber = Convert.ToInt32(Console.ReadLine());
+                    if (choiceNumber == number)
+                    {
+                        money += (bet * 36) + bet;
+                    }
+                }
+
+                if (number == 0)
+                {
+                    Console.Write("Выпавшее число: ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(number);
+                }
+                else if (number % 2 == 0)
+                {
+                    Console.Write("Выпавшее число: ");
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.WriteLine(number);
+                }
+                else if (number % 2 != 0)
+                {
+                    Console.Write("Выпавшее число: ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(number);
+                }
+                Console.ForegroundColor = ConsoleColor.White;
+
+                Console.WriteLine($"Баланс: {money}$");
+
+            }
+
+            else
+            {
+                Console.WriteLine("У тебя нет таких денег :(");
             }
 
             return money;
 
-
-
-
-
         }
+
+
     }
 }
 
