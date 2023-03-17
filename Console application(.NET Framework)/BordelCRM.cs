@@ -172,6 +172,11 @@
         /// <returns>Новый баланс.</returns>
         static int Casino(int money)
         {
+            List<int> winInfo = new List<int>();// Максимальный выигрыш
+            List<int> betInfo = new List<int>();// Ставка
+            List<int> spendInfo = new List<int>();// Трата 
+
+
             OutLine($"Баланс: {money}$");
             OutLine(string.Empty);
             Out(0 + " ",ConsoleColor.Green);
@@ -193,8 +198,15 @@
             Out("Введи размер ставки($): ");
             
             int bet = Convert.ToInt32(Console.ReadLine());
+            betInfo.Add(bet);
+
+
+            int win = 0;
+
+
             if (bet <= money)
             {
+                
                 money = money - bet;
                 Out("(Красное/Чёрное/Чётное/Нечётное/Диапазон(1-18;19-36)/Число): ");
                 string play = Console.ReadLine();
@@ -203,15 +215,20 @@
                 Random random = new Random();
                 int number = random.Next(0, 36);
 
+
+                int choiceNumber = 0;
                 if (play == "красное" || play == "нечетное")
                 {
                     if (number % 2 != 0)
                     {
-                        money += (bet * 2) + bet;
+                        win = bet * 2;
+                        winInfo.Add(win);
+                        money += win;
                     }
 
                     else
                     {
+                        winInfo.Add(0);
                         bet = 0;
                     }
                 }
@@ -219,11 +236,14 @@
                 {
                     if (number % 2 == 0)
                     {
-                        money += (bet * 2) + bet;
+                        win = bet * 2;
+                        winInfo.Add(win);
+                        money += win;
                     }
 
                     else
                     {
+                        winInfo.Add(0);
                         bet = 0;
                     }
                 }
@@ -237,10 +257,13 @@
                     {
                         if (number <= 18)
                         {
-                            money += (bet * 2) + bet;
+                            win = bet * 2;
+                            winInfo.Add(win);
+                            money += win;
                         }
                         else
                         {
+                            winInfo.Add(0);
                             bet = 0;
                         }
 
@@ -250,10 +273,13 @@
                     {
                         if (number > 18)
                         {
-                            money += (bet * 2) + bet;
+                            win = bet * 2;
+                            winInfo.Add(win);
+                            money += win;
                         }
                         else
                         {
+                            winInfo.Add(0);
                             bet = 0;
                         }
                     }
@@ -266,10 +292,12 @@
                 else if (play == "число")
                 {
                     Out("Введи число: ");
-                    int choiceNumber = Convert.ToInt32(Console.ReadLine());
+                    choiceNumber = Convert.ToInt32(Console.ReadLine());
                     if (choiceNumber == number)
                     {
-                        money += (bet * 36) + bet;
+                        win = bet * 36;
+                        winInfo.Add(win);
+                        money += win;
                     }
                 }
 
@@ -290,7 +318,10 @@
                 }
 
                 OutLine($"Баланс: {money}$");
+                string a = (choiceNumber == 0 ? "1" : "2");
 
+                //Console.WriteLine($"1 - {winInfo[0]}$(ставка: {betInfo[0]}$ на красное; выпавшее число 3; потрачено 500$)\n2 - {winInfo[1]}$(ставка: {betInfo[1]}$ на красное; выпавшее число 11; потрачено 1600$)\n3 - {winInfo[2]}$(ставка: {betInfo[2]}$ на число; выпавшее число 0; потрачено 150$)");
+                Console.WriteLine($"1 - (выигрыш: {winInfo[0]}$; ставка: {betInfo[0]}$ на {play}; выпавшее число {number}; потрачено 500$");
             }
             else
             {
